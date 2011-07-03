@@ -1,0 +1,7 @@
+<linked-list>
+  <pluginrepo>
+    <url>http://projectsaleen.org/plugins/plugins.xml</url>
+    <comment>Main Repository</comment>
+    <plugins class="linked-list"/>
+  </pluginrepo>
+</linked-list>
