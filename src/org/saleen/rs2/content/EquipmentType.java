@@ -1,0 +1,5 @@
+package org.saleen.rs2.content;
+
+public enum EquipmentType {
+	SWORD, LONGSWORD, SPEAR, DAGGER, PICKAXE, WHIP, SCIMITAR, BATTLEAXE, TWOH_SWORD, HATCHET, HALBERD, MAUL, WARHAMMER, MACE, STAFF
+}
