@@ -503,7 +503,7 @@ public class World {
 				} else {
 					playerStorage.set(lr.getPlayer().getChannel(),
 							lr.getPlayer());
-					
+
 					loader.loadPlayer(lr.getPlayer());
 
 					engine.pushTask(new ChannelLoginTask(lr.getPlayer()));
