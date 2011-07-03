@@ -1,5 +1,11 @@
 package org.saleen.util;
 
+/**
+ * A basic priority
+ * 
+ * @author Nikki
+ *
+ */
 public enum Priority {
 	HIGHEST(0), HIGH(1), NORMAL(2), LOW(3), LOWEST(4);
 
