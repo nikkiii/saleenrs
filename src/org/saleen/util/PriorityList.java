@@ -100,6 +100,13 @@ public class PriorityList<T> implements Iterable<T> {
 		return new PriorityIterator<T>(objects);
 	}
 
+	/**
+	 * Check if this list contains an object
+	 * @param object
+	 * 			The object
+	 * @return
+	 * 			True, if found
+	 */
 	public boolean contains(T object) {
 		Iterator<PriorityEntry> it = objects.iterator();
 		while (it.hasNext()) {
@@ -111,6 +118,11 @@ public class PriorityList<T> implements Iterable<T> {
 		return false;
 	}
 
+	/**
+	 * Remove all matching objects from this list
+	 * @param coll
+	 * 			The collection of objects to remove
+	 */
 	public void removeAll(Collection<T> coll) {
 		Iterator<PriorityEntry> it = objects.iterator();
 		while (it.hasNext()) {
@@ -121,6 +133,13 @@ public class PriorityList<T> implements Iterable<T> {
 		}
 	}
 
+	/**
+	 * An iterator which grabs the PriorityEntry objects from this list, and gets only the real objects
+	 * @author Nikki
+	 *
+	 * @param <E>
+	 * 			The class type
+	 */
 	public class PriorityIterator<E> implements Iterator<T> {
 
 		/**
