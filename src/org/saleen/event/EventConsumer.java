@@ -1,5 +1,7 @@
 package org.saleen.event;
 
+import org.saleen.util.Priority;
+
 /**
  * A consumer of {@link Event} instances.
  * 
@@ -17,6 +19,16 @@ public abstract class EventConsumer {
 		for (Class<? extends Event> eventType : eventTypes) {
 			EventProcessor.getInstance().bind(eventType, this);
 		}
+	}
+	
+	/**
+	 * Binds the given <code>Event</code> types to this consumer.
+	 * 
+	 * @param eventTypes
+	 *            The types that this consumer is interested in
+	 */
+	public void bind(Class<? extends Event> eventType, Priority priority) {
+		EventProcessor.getInstance().bind(eventType, this, priority);
 	}
 
 	/**

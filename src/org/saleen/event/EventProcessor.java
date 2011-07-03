@@ -2,11 +2,13 @@ package org.saleen.event;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.saleen.util.Priority;
+import org.saleen.util.PriorityList;
 
 /**
  * The core event processing engine. Handles the binding, unbinding, and
@@ -33,7 +35,7 @@ public class EventProcessor {
 	/**
 	 * The map of Events -> Event Consumers
 	 */
-	private Map<Class<? extends Event>, LinkedList<EventConsumer>> map = new HashMap<Class<? extends Event>, LinkedList<EventConsumer>>();
+	private Map<Class<? extends Event>, PriorityList<EventConsumer>> map = new HashMap<Class<? extends Event>, PriorityList<EventConsumer>>();
 
 	private EventProcessor() {
 		// Access via singleton only.
@@ -74,10 +76,23 @@ public class EventProcessor {
 	 */
 	public void bind(Class<? extends Event> eventType,
 			EventConsumer... consumers) {
-		LinkedList<EventConsumer> list = getConsumersOf(eventType);
+		PriorityList<EventConsumer> list = getConsumersOf(eventType);
 		for (EventConsumer consumer : consumers) {
-			list.addFirst(consumer);
+			list.add(consumer); //Add with normal priority
 		}
+	}
+	
+	/**
+	 * Bind an event with a priority
+	 * @param eventType
+	 * 			The event type
+	 * @param consumer
+	 * 			The consumer
+	 * @param priority
+	 * 			The priority
+	 */
+	public void bind(Class<? extends Event> eventType, EventConsumer consumer, Priority priority) {
+		getConsumersOf(eventType).add(consumer, priority);
 	}
 
 	/**
@@ -103,11 +118,11 @@ public class EventProcessor {
 	 * @return A list of <code>EventConsumer</code> instances interested in the
 	 *         given event.
 	 */
-	private LinkedList<EventConsumer> getConsumersOf(
+	private PriorityList<EventConsumer> getConsumersOf(
 			Class<? extends Event> eventType) {
-		LinkedList<EventConsumer> list = map.get(eventType);
+		PriorityList<EventConsumer> list = map.get(eventType);
 		if (list == null) {
-			map.put(eventType, list = new LinkedList<EventConsumer>());
+			map.put(eventType, list = new PriorityList<EventConsumer>());
 		}
 		return list;
 	}
@@ -120,7 +135,7 @@ public class EventProcessor {
 	 * @return
 	 */
 	public void unbindTypes(EventConsumer eventConsumer) {
-		for (Entry<Class<? extends Event>, LinkedList<EventConsumer>> entry : map
+		for (Entry<Class<? extends Event>, PriorityList<EventConsumer>> entry : map
 				.entrySet()) {
 			if (entry.getValue().contains(eventConsumer)) {
 				unbind(entry.getKey(), eventConsumer);
