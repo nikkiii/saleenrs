@@ -63,24 +63,19 @@ public class FileScriptManager extends ScriptManager {
 		for (File child : children) {
 			if (child.isDirectory()) {
 				loadScriptsInternal(child);
-			} else if (child.getName().endsWith(".lua")) {
+			} else {
 				try {
 					String scriptName = child.getPath().substring(
 							child.getPath().indexOf("pts\\") + 4,
-							child.getPath().indexOf("."));
+							child.getPath().lastIndexOf("."));
+					String extension = child.getName().substring(child.getName().lastIndexOf("."));
 					scriptName = scriptName.replace("\\", ".");
-					defineScript(scriptName, FileUtils.readContents(child));
+					defineScript(scriptName, extension, FileUtils.readContents(child));
 				} catch (Exception e) {
 					// Continue on..
 					e.printStackTrace();
 				}
 			}
 		}
-	}
-
-	@Override
-	public void reload() {
-		clear();
-		loadScriptsInternal(scriptDir);
 	}
 }

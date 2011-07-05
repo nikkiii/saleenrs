@@ -26,12 +26,6 @@ public class XStreamController {
 			xstream.alias("area", org.saleen.rs2.content.area.BasicArea.class);
 			xstream.alias("compositearea",
 					org.saleen.rs2.content.area.CompositeArea.class);
-			xstream.alias("category",
-					org.saleen.util.pluginmanager.PluginCategory.class);
-			xstream.alias("plugin",
-					org.saleen.util.pluginmanager.PluginManifest.class);
-			xstream.alias("pluginrepo",
-					org.saleen.util.pluginmanager.Repository.class);
 		}
 		return xstream;
 	}

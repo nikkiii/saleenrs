@@ -1,7 +1,6 @@
 package org.saleen.util;
 
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -148,7 +147,16 @@ public class Streams {
 		return builder.toString();
 	}
 
-	public static void copy(InputStream input, FileOutputStream output)
+	/**
+	 * Copy from an inputstream to an outputstream
+	 * @param input
+	 * 			The input stream
+	 * @param output
+	 * 			The output stream
+	 * @throws IOException
+	 * 			If an error occurred
+	 */
+	public static void copy(InputStream input, OutputStream output)
 			throws IOException {
 		byte[] buffer = new byte[1024];
 		while (true) {

@@ -19,6 +19,7 @@ import org.saleen.event.impl.PlayerLoginEvent.PlayerLogout;
 import org.saleen.rs2.model.World;
 import org.saleen.rs2.net.ThroughputCounter;
 import org.saleen.util.Filter;
+import org.saleen.util.Priority;
 import org.saleen.util.configuration.ConfigurationNode;
 import org.saleen.util.configuration.ConfigurationParser;
 
@@ -82,7 +83,8 @@ public class ManagementConsole {
 					users.put(username, subUserNode.getString("password"));
 				}
 				PlayerEventConsumer consumer = new PlayerEventConsumer(console);
-				consumer.bind(PlayerLogin.class, PlayerLogout.class);
+				consumer.bind(PlayerLogin.class, Priority.HIGHEST);
+				consumer.bind(PlayerLogout.class, Priority.HIGHEST);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

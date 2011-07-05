@@ -97,7 +97,8 @@ public class PluginLoader {
 						.entrySet()) {
 					String scriptName = entry.getKey();
 					String scriptPath = (String) entry.getValue();
-					manager.loadScript(scriptName,
+					String extension = scriptPath.substring(scriptPath.lastIndexOf("."));
+					manager.loadScript(scriptName, extension,
 							loader.getResourceAsStream(scriptPath));
 				}
 			}

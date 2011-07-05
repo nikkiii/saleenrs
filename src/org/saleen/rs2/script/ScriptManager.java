@@ -1,18 +1,21 @@
 package org.saleen.rs2.script;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
-import org.keplerproject.luajava.LuaState;
-import org.keplerproject.luajava.LuaStateFactory;
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 /**
  * A script manager based on Lua
  * 
  * @author Nikki
  */
-public abstract class ScriptManager {
+public class ScriptManager {
+	
+	private ScriptEngineManager manager = new ScriptEngineManager();
 
 	/**
 	 * The logger for this manager.
@@ -23,7 +26,7 @@ public abstract class ScriptManager {
 	/**
 	 * The script storage map
 	 */
-	private HashMap<String, LuaState> scripts = new HashMap<String, LuaState>();
+	private HashMap<String, ScriptEngine> scripts = new HashMap<String, ScriptEngine>();
 
 	/**
 	 * Initialize the class
@@ -51,18 +54,9 @@ public abstract class ScriptManager {
 			if (!scripts.containsKey(script)) {
 				throw new Exception("Unknown script : " + script);
 			}
-			LuaState state = scripts.get(script);
-			state.pcall(0, 0, 0);
-			state.getGlobal(method);
-			if (args != null) {
-				for (Object object : args) {
-					state.pushJavaObject(object);
-				}
-			}
-			int resp = state.pcall(args.length, 0, 0);
-			if (resp != 0) {
-				throw new Exception("Error when running script : code " + resp);
-			}
+			Invocable inv = (Invocable) scripts.get(script);
+			
+			return inv.invokeFunction(method, args);
 		} catch (Exception e) {
 			logger.severe("Error running script : " + script + " method "
 					+ method);
@@ -79,8 +73,8 @@ public abstract class ScriptManager {
 	 * @param bytes
 	 *            The bytes
 	 */
-	public void defineScript(String name, byte[] bytes) {
-		defineScript(name, new String(bytes));
+	public void defineScript(String name, String extension, byte[] bytes) {
+		defineScript(name, extension, new String(bytes));
 	}
 
 	/**
@@ -91,41 +85,15 @@ public abstract class ScriptManager {
 	 * @param bytes
 	 *            The
 	 */
-	public void defineScript(String name, String script) {
-		LuaState state = createState();
-		state.LdoString(script);
-		scripts.put(name, state);
+	public void defineScript(String name, String extension, String script) {
+		ScriptEngine engine = manager.getEngineByExtension(extension);
+        try {
+			engine.eval(new String(script));
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+        scripts.put(name, engine);
 	}
-
-	/**
-	 * Define a script from a file
-	 * 
-	 * @param name
-	 *            The name
-	 * @param file
-	 *            The file
-	 */
-	public void defineScript(String name, File file) {
-		LuaState state = createState();
-		state.LdoFile(file.getPath());
-		scripts.put(name, state);
-	}
-
-	/**
-	 * Creates a new lua state, and saves us space...
-	 * 
-	 * @return the newly created state
-	 */
-	public LuaState createState() {
-		LuaState state = LuaStateFactory.newLuaState();
-		state.openLibs();
-		return state;
-	}
-
-	/**
-	 * Reload scripts
-	 */
-	public abstract void reload();
 
 	/**
 	 * Clear the scripts

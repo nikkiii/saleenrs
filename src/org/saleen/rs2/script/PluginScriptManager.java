@@ -40,13 +40,8 @@ public class PluginScriptManager extends ScriptManager {
 	 * @throws IOException
 	 *             If an error occurred reading
 	 */
-	public void loadScript(String name, InputStream input) throws IOException {
-		defineScript(name, Streams.readContents(input));
-	}
-
-	@Override
-	public void reload() {
-		// We cannot reload without the whole file so later!
+	public void loadScript(String name, String extension, InputStream input) throws IOException {
+		defineScript(name, extension, Streams.readContents(input));
 	}
 
 	/**

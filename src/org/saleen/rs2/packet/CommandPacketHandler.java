@@ -42,10 +42,7 @@ public class CommandPacketHandler extends EventProducer implements
 		String[] args = commandString.split(" ");
 		String command = args[0].toLowerCase();
 		try {
-			if (command.equals("hello")) {
-				FileScriptManager.getScriptManager().invoke("hello:helloworld",
-						player);
-			} else if (command.equals("addxp")) {
+			if (command.equals("addxp")) {
 				int xp = new Random().nextInt(Short.MAX_VALUE);
 				player.getActionSender().sendMessage("Gained xp: " + xp);
 				player.getActionSender().sendXPCounter(0, xp);
@@ -167,10 +164,6 @@ public class CommandPacketHandler extends EventProducer implements
 						Integer.parseInt(args[1]), Integer.parseInt(args[2]));
 			} else if (command.equals("invokescript")) {
 				FileScriptManager.getScriptManager().invoke(args[1], player);
-			} else if (command.equals("reloadscripts")) {
-				player.getActionSender().sendMessage("Reloading scripts...");
-				FileScriptManager.getScriptManager().reload();
-				player.getActionSender().sendMessage("Finished!");
 			} else if (command.startsWith("tmask")) {
 				int radius = 0;
 				TileMapBuilder bldr = new TileMapBuilder(player.getLocation(),
@@ -217,7 +210,7 @@ public class CommandPacketHandler extends EventProducer implements
 						"Strength bonus: " + player.getStrengthBonus());
 				player.getActionSender().sendMessage(
 						"Max hit: "
-								+ CombatCalculations.calculateMeleeHit(player));
+								+ CombatCalculations.calculateMaxMeleeHit(player));
 			} else {
 				produce(new CommandEvent(player, commandString));
 			}
