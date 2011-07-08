@@ -89,6 +89,13 @@ public class PluginLoader {
 							: file.getName(), pluginConf
 							.getString("description"), pluginConf
 							.getString("author"), file));
+			// Check if this is a library plugin
+			if(pluginConf.has("library")) {
+				boolean library = pluginConf.getBoolean("library");
+				if(library) {
+					PluginUtils.addToClasspath(file.toURI().toURL());
+				}
+			}
 			// Load scripts from the plugin conf
 			if (pluginConf.has("scripts")) {
 				PluginScriptManager manager = new PluginScriptManager(loader);

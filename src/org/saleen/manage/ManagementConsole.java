@@ -59,7 +59,6 @@ public class ManagementConsole {
 	/**
 	 * Setup the management console
 	 */
-	@SuppressWarnings("unchecked")
 	public static void setup() {
 		try {
 			ConfigurationParser parser = new ConfigurationParser(

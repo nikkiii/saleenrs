@@ -1,5 +1,7 @@
 package org.saleen.rs2.event.impl;
 
+import org.saleen.event.EventProducer;
+import org.saleen.event.impl.EntityDeathEvent;
 import org.saleen.rs2.event.Event;
 import org.saleen.rs2.model.Animation;
 import org.saleen.rs2.model.Entity;
@@ -15,7 +17,15 @@ import org.saleen.rs2.model.Skills;
  * 
  */
 public class DeathEvent extends Event {
+	
+	/**
+	 * The event producer.
+	 */
+	private static EventProducer producer = new EventProducer();
 
+	/**
+	 * The entity
+	 */
 	private Entity entity;
 
 	/**
@@ -32,6 +42,7 @@ public class DeathEvent extends Event {
 
 	@Override
 	public void execute() {
+		producer.produce(new EntityDeathEvent(entity));
 		if (entity instanceof Player) {
 			Player p = (Player) entity;
 			p.getSkills().setLevel(Skills.HITPOINTS,
