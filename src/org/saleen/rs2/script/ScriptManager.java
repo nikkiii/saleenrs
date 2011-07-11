@@ -15,7 +15,7 @@ import javax.script.ScriptException;
  */
 public class ScriptManager {
 	
-	private ScriptEngineManager manager = new ScriptEngineManager();
+	private static ScriptEngineManager manager = new ScriptEngineManager();
 
 	/**
 	 * The logger for this manager.
@@ -87,8 +87,11 @@ public class ScriptManager {
 	 */
 	public void defineScript(String name, String extension, String script) {
 		ScriptEngine engine = manager.getEngineByExtension(extension);
+		if(engine == null) {
+			throw new RuntimeException("No manager for "+extension);
+		}
         try {
-			engine.eval(new String(script));
+			engine.eval(script);
 		} catch (ScriptException e) {
 			e.printStackTrace();
 		}
@@ -100,5 +103,14 @@ public class ScriptManager {
 	 */
 	protected void clear() {
 		scripts.clear();
+	}
+	
+	/**
+	 * Get the script engine manager...
+	 * @return
+	 * 		The current manager
+	 */
+	public static ScriptEngineManager getEngineManager() {
+		return manager;
 	}
 }

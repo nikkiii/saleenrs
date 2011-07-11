@@ -61,6 +61,8 @@ public class FileScriptManager extends ScriptManager {
 	private void loadScriptsInternal(File file) {
 		File[] children = file.listFiles();
 		for (File child : children) {
+			if(child.getName().startsWith("."))
+				continue;
 			if (child.isDirectory()) {
 				loadScriptsInternal(child);
 			} else {
@@ -68,7 +70,7 @@ public class FileScriptManager extends ScriptManager {
 					String scriptName = child.getPath().substring(
 							child.getPath().indexOf("pts\\") + 4,
 							child.getPath().lastIndexOf("."));
-					String extension = child.getName().substring(child.getName().lastIndexOf("."));
+					String extension = child.getName().substring(child.getName().lastIndexOf(".")+1);
 					scriptName = scriptName.replace("\\", ".");
 					defineScript(scriptName, extension, FileUtils.readContents(child));
 				} catch (Exception e) {

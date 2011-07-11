@@ -325,16 +325,16 @@ public class World {
 			if (serverNode.has("cacheDirectory")) {
 				loadCache(new File(serverNode.getString("cacheDirectory")));
 			}
+			if (serverNode.has("pluginDirectory")) {
+				PluginLoader.getInstance().load(
+						new File(serverNode.getString("pluginDirectory")));
+			}
 			if (serverNode.has("scriptDirectory")) {
 				FileScriptManager.getScriptManager().loadScripts(
 						serverNode.getString("scriptDirectory"));
 			}
 			if (serverNode.has("contentDirectory")) {
 				loadContent(new File(serverNode.getString("contentDirectory")));
-			}
-			if (serverNode.has("pluginDirectory")) {
-				PluginLoader.getInstance().load(
-						new File(serverNode.getString("pluginDirectory")));
 			}
 			if (serverNode.has("worldLoader")) {
 				String worldLoaderClass = serverNode.getString("worldLoader");

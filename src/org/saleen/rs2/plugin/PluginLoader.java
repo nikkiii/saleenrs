@@ -92,21 +92,22 @@ public class PluginLoader {
 							.getString("description"), pluginConf
 							.getString("author"), file));
 			// Check if this is a library plugin
-			if(pluginConf.has("library")) {
+			if(node.has("library")) {
 				ConfigurationNode libraryConf = node.nodeFor("library");
 				for (Map.Entry<String, Object> entry : libraryConf.getChildren()
 						.entrySet()) {
 					//TODO use name?
-					String libraryName = entry.getKey();
+					entry.getKey();
 					String libraryPath = (String) entry.getValue();
-					URL url = loader.getResource(libraryPath);
+					URL url = ClasspathUtils.extractToTemp(file, libraryPath).toURI().toURL();
 					if(!ClasspathUtils.classpathContains(url)) {
 						ClasspathUtils.addToClasspath(url);
+						logger.info("Loaded classpath "+url);
 					}
 				}
 			}
 			// Load scripts from the plugin conf
-			if (pluginConf.has("scripts")) {
+			if (node.has("scripts")) {
 				PluginScriptManager manager = new PluginScriptManager(loader);
 				ConfigurationNode scriptConf = node.nodeFor("scripts");
 				for (Map.Entry<String, Object> entry : scriptConf.getChildren()
