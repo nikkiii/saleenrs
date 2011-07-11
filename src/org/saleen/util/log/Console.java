@@ -1,6 +1,6 @@
 package org.saleen.util.log;
 
-import org.saleen.util.Misc;
+import org.saleen.util.RSSystem;
 
 /**
  * A simple console class which can change title :)
@@ -11,7 +11,7 @@ import org.saleen.util.Misc;
 public class Console {
 
 	static {
-		if (Misc.isWindows()) {
+		if (RSSystem.isWindows()) {
 			System.loadLibrary("console");
 		}
 	}
@@ -22,9 +22,9 @@ public class Console {
 	 * @param s
 	 */
 	public static void setTitle(String s) {
-		if (Misc.isWindows()) {
+		if (RSSystem.isWindows()) {
 			setTitleWindows(s);
-		} else if (Misc.isUnix() || Misc.isMacOS()) {
+		} else if (RSSystem.isUnix() || RSSystem.isMacOS()) {
 			setTitleUnix(s);
 		}
 	}

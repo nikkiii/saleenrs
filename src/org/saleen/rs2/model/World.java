@@ -59,7 +59,7 @@ import org.saleen.rs2.util.NameUtils;
 import org.saleen.rs2.util.TextUtils;
 import org.saleen.util.BlockingExecutorService;
 import org.saleen.util.Filter;
-import org.saleen.util.Misc;
+import org.saleen.util.RSSystem;
 import org.saleen.util.configuration.ConfigurationNode;
 import org.saleen.util.configuration.ConfigurationParser;
 
@@ -410,7 +410,7 @@ public class World {
 	private void registerGlobalEvents() {
 		submit(new UpdateEvent());
 		submit(new CleanupEvent());
-		if (Misc.isWindows() || Misc.isUnix() || Misc.isMacOS())
+		if (RSSystem.isWindows() || RSSystem.isUnix() || RSSystem.isMacOS())
 			submit(new ConsoleEvent());
 	}
 

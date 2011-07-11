@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.saleen.rs2.script.PluginScriptManager;
+import org.saleen.util.ClasspathUtils;
 import org.saleen.util.FileUtils;
 import org.saleen.util.Filter;
 import org.saleen.util.configuration.ConfigurationNode;
@@ -49,8 +50,9 @@ public class PluginLoader {
 		List<File> list = FileUtils.list(folder, new Filter<File>() {
 			@Override
 			public boolean accept(File t) {
+				//Verify it is a plugin file or the directory has a plugin configuration!
 				return t.getName().endsWith(".jar") || t.isDirectory()
-						&& !t.getName().startsWith(".");
+						&& !t.getName().startsWith(".") && new File(t, "plugin.conf").exists();
 			}
 		});
 
@@ -91,9 +93,16 @@ public class PluginLoader {
 							.getString("author"), file));
 			// Check if this is a library plugin
 			if(pluginConf.has("library")) {
-				boolean library = pluginConf.getBoolean("library");
-				if(library) {
-					PluginUtils.addToClasspath(file.toURI().toURL());
+				ConfigurationNode libraryConf = node.nodeFor("library");
+				for (Map.Entry<String, Object> entry : libraryConf.getChildren()
+						.entrySet()) {
+					//TODO use name?
+					String libraryName = entry.getKey();
+					String libraryPath = (String) entry.getValue();
+					URL url = loader.getResource(libraryPath);
+					if(!ClasspathUtils.classpathContains(url)) {
+						ClasspathUtils.addToClasspath(url);
+					}
 				}
 			}
 			// Load scripts from the plugin conf

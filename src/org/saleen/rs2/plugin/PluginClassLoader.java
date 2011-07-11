@@ -62,6 +62,7 @@ public class PluginClassLoader extends ClassLoader {
 	@Override
 	public URL getResource(String name) {
 		try {
+			//We can use the base file to construct a new file and convert to url..
 			return new File(base, name).toURI().toURL();
 		} catch (Exception e) {
 			return null;
@@ -71,6 +72,7 @@ public class PluginClassLoader extends ClassLoader {
 	@Override
 	public InputStream getResourceAsStream(String name) {
 		try {
+			//We can use the base file to return a new input stream from the name
 			return new FileInputStream(new File(base, name));
 		} catch (final IOException e) {
 			return null;
